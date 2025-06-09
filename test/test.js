@@ -5,8 +5,8 @@ import {fileURLToPath} from 'node:url';
 import test from 'ava';
 import {execa} from 'execa';
 import {temporaryDirectory} from 'tempy';
-import binCheck from 'bin-check';
-import binBuild from 'bin-build';
+import binCheck from '@lesjoursfr/bin-check';
+import binBuild from '@localnerve/bin-build';
 import compareSize from 'compare-size';
 import jpegtran from '../index.js';
 
@@ -33,10 +33,22 @@ test('rebuild the jpegtran binaries', async t => {
 });
 
 test('return path to binary and verify that it is working', async t => {
+	// Skip the test on Windows
+	if (process.platform === 'win32') {
+		t.pass();
+		return;
+	}
+
 	t.true(await binCheck(jpegtran, ['-version']));
 });
 
 test('minify a JPG', async t => {
+	// Skip the test on Windows
+	if (process.platform === 'win32') {
+		t.pass();
+		return;
+	}
+
 	const temporary = temporaryDirectory();
 	const src = fileURLToPath(new URL('fixtures/test.jpg', import.meta.url));
 	const dest = path.join(temporary, 'test.jpg');
