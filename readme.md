@@ -4,13 +4,11 @@
 
 You probably want [`imagemin-jpegtran`](https://github.com/imagemin/imagemin-jpegtran) instead.
 
-
 ## Install
 
+```shell
+npm install --save jpegtran-bin
 ```
-$ npm install --save jpegtran-bin
-```
-
 
 ## Usage
 
@@ -19,21 +17,19 @@ import {execFile} from 'node:child_process';
 import jpegtran from 'jpegtran-bin';
 
 execFile(jpegtran, ['-outfile', 'output.jpg', 'input.jpg'], error => {
-	console.log('Image minified!');
+  console.log('Image minified!');
 });
 ```
 
-
 ## CLI
 
-```
-$ npm install --global jpegtran-bin
-```
-
-```
-$ jpegtran --help
+```shell
+npm install --global jpegtran-bin
 ```
 
+```shell
+jpegtran --help
+```
 
 ## License
 

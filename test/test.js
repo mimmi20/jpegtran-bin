@@ -1,65 +1,55 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from 'node:url';
 import test from 'ava';
-import {execa} from 'execa';
-import {temporaryDirectory} from 'tempy';
+import { execa } from 'execa';
+import { temporaryDirectory } from 'tempy';
 import binCheck from '@lesjoursfr/bin-check';
 import binBuild from '@localnerve/bin-build';
 import compareSize from 'compare-size';
 import jpegtran from '../index.js';
 
-test('rebuild the jpegtran binaries', async t => {
-	// Skip the test on Windows
-	if (process.platform === 'win32') {
-		t.pass();
-		return;
-	}
+test('rebuild the jpegtran binaries', async (t) => {
+  // Skip the test on Windows
+  if (process.platform === 'win32') {
+    t.pass();
+    return;
+  }
 
-	const temporary = temporaryDirectory();
-	const cfg = [
-		'./configure --disable-shared',
-		`--prefix="${temporary}" --bindir="${temporary}"`,
-	].join(' ');
-	const source = fileURLToPath(new URL('../vendor/source/libjpeg-turbo-1.5.1.tar.gz', import.meta.url));
+  const temporary = temporaryDirectory();
+  const cfg = ['./configure --disable-shared', `--prefix="${temporary}" --bindir="${temporary}"`].join(' ');
+  const source = fileURLToPath(new URL('../vendor/source/libjpeg-turbo-1.5.1.tar.gz', import.meta.url));
 
-	await binBuild.file(source, [
-		cfg,
-		'make install',
-	]);
+  await binBuild.file(source, [cfg, 'make install']);
 
-	t.true(fs.existsSync(path.join(temporary, 'jpegtran')));
+  t.true(fs.existsSync(path.join(temporary, 'jpegtran')));
 });
 
-test('return path to binary and verify that it is working', async t => {
-	// Skip the test on Windows
-	if (process.platform === 'win32') {
-		t.pass();
-		return;
-	}
+test('return path to binary and verify that it is working', async (t) => {
+  // Skip the test on Windows
+  if (process.platform === 'win32') {
+    t.pass();
+    return;
+  }
 
-	t.true(await binCheck(jpegtran, ['-version']));
+  t.true(await binCheck(jpegtran, ['-version']));
 });
 
-test('minify a JPG', async t => {
-	// Skip the test on Windows
-	if (process.platform === 'win32') {
-		t.pass();
-		return;
-	}
+test('minify a JPG', async (t) => {
+  // Skip the test on Windows
+  if (process.platform === 'win32') {
+    t.pass();
+    return;
+  }
 
-	const temporary = temporaryDirectory();
-	const src = fileURLToPath(new URL('fixtures/test.jpg', import.meta.url));
-	const dest = path.join(temporary, 'test.jpg');
-	const args = [
-		'-outfile',
-		dest,
-		src,
-	];
+  const temporary = temporaryDirectory();
+  const src = fileURLToPath(new URL('fixtures/test.jpg', import.meta.url));
+  const dest = path.join(temporary, 'test.jpg');
+  const args = ['-outfile', dest, src];
 
-	await execa(jpegtran, args);
-	const result = await compareSize(src, dest);
+  await execa(jpegtran, args);
+  const result = await compareSize(src, dest);
 
-	t.true(result[dest] < result[src]);
+  t.true(result[dest] < result[src]);
 });
