@@ -63,17 +63,17 @@
     "@lesjoursfr/bin-check": "^7.1.9",
     "compare-size": "^3.0.0",
     "execa": "^9.6.0",
-    "tempy": "^3.0.0",
-    "@eslint/js": "^9.27.0",
-    "eslint": "^9.27.0",
+    "tempy": "^3.1.0",
+    "@eslint/js": "^9.29.0",
+    "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.4.0",
+    "eslint-plugin-prettier": "^5.5.0",
     "globals": "^16.2.0",
     "is-progressive": "^5.0.1",
     "prettier": "^3.5.3",
     "prettier-eslint": "^16.4.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.33.0"
+    "typescript-eslint": "^8.34.1"
   },
   "overrides": {
     "eslint": "$eslint"
